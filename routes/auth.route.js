@@ -1,10 +1,9 @@
 const express = require("express")
-const { rawListeners } = require("../models/User")
 const router = express.Router()
 
-const { register, login } = require("../controllers/auth")
+const { register, login, logout } = require("../controllers/auth")
 
 router.route("/register").post(register)
 router.route("/login").post(login)
-
+router.route("/logout").post(logout)
 module.exports = router

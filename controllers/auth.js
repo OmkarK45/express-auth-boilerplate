@@ -1,5 +1,6 @@
 const User = require("../models/User")
 const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
 
 /*
     This is registration controller.
@@ -35,12 +36,8 @@ exports.register = async (req, res, next) => {
     // Save him in db
     await user.save()
 
-    // Send response
-    res.status(201).json({
-      success: true,
-      msg: "User registration successful",
-      code: "USER_CREATED",
-    })
+    // send cookie
+    sendCookie(user, 200, "User registered !", "REGISTRATION_SUCCESS", res)
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -82,10 +79,27 @@ exports.login = async (req, res, next) => {
         code: "INVALID_CREDS",
       })
     }
+
+    sendCookie(user, 200, "Logged in successfully!", "LOGIN_SUCCESS", res)
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      msg: error,
+      code: "INTERNAL_ERROR",
+    })
+  }
+}
+
+exports.logout = async (req, res, next) => {
+  try {
+    /*
+        Simple destroy the cookie
+    */
+    res.cookie("token", "", { httpOnly: true })
     res.status(200).json({
+      msg: "Logged out successfully!",
       success: true,
-      msg: "Logged in.. !",
-      code: "LOGIN_SUCCESS",
+      code: "LOGOUT_SUCCESS",
     })
   } catch (error) {
     res.status(500).json({
@@ -94,4 +108,28 @@ exports.login = async (req, res, next) => {
       code: "INTERNAL_ERROR",
     })
   }
+}
+
+const sendCookie = async (user, statusCode, msg, code, res) => {
+  const token = await jwt.sign(
+    {
+      id: user._id,
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_EXPIRY_TIME,
+    }
+  )
+  res.cookie("token", token, {
+    httpOnly: true,
+    maxAge: 7 * 24 * 3600 * 1000,
+  })
+  res.status(statusCode).json({
+    success: true,
+    msg,
+    code,
+    userID: user._id,
+    username: user.username,
+    email: user.email,
+  })
 }
