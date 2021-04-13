@@ -14,6 +14,12 @@ connectDB()
 app.use(cors(corsOptions))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+/*
+  All auth routes are prefixed with /api/auth
+  However you can replace this with anything as you
+  wish
+*/
+app.use("/api/auth", require("./routes/auth.route"))
 
 const PORT = process.env.PORT
 
