@@ -10,7 +10,7 @@ To clone and run this application, you'll need [Git](https://git-scm.com) and [N
 
 ```bash
 # Clone this repository
-$ git clone https://github.com/OmkarK45/formify
+$ git clone https://github.com/OmkarK45/express-auth-boilerplate
 
 # Create environment Variables
 # Create a config.env in ./server folder
@@ -50,11 +50,14 @@ $ yarn prod
 - POST -> `/api/auth/logout`
   - This expects nothing. It will reset the cookie on the client
 
-# Common Features
+# Features
 
 - ✅ Cookie Authentication
 - ✅ Basic validation of email and password.
 - ✅ You can swap out validation libs (this uses plain regex. You can use something like JOI or ZOD)
+- ✅ Error Handling built in
+- ✅ Catch all 404 route
+- ✅ Clear and concise HTTP Staus codes along with `success` boolean and `code` for uniform usage
 
 # About Me
 
