@@ -1,8 +1,6 @@
 # express-auth-boilerplate
 
-Solid authentication boilerplate using express, jwt with Email Verification and password reset support. Based on mongoose and mongoDB
-
-# HOW TO USE ??
+Solid authentication boilerplate using express, jwt with Email Verification (Soon™) and password reset support (Soon™). Based on mongoose and mongoDB
 
 ## How To Use
 
@@ -49,6 +47,14 @@ $ yarn prod
 
 - POST -> `/api/auth/logout`
   - This expects nothing. It will reset the cookie on the client
+
+# Folder Structure Information
+
+- This app uses MVC (Model-View-Controller) architecture
+- All the route definitions are present in `routes` Folder
+- All the logic is present in `controller` folder
+- All the models are present in `models` folder
+- Configure the database connection in `config/db.js` folder
 
 # Features
 
