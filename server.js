@@ -2,16 +2,19 @@ require("dotenv").config({ path: "./config.env" })
 const express = require("express")
 const bodyParser = require("body-parser")
 const cors = require("cors")
+const cookieParser = require("cookie-parser")
+
 const connectDB = require("./config/db")
 const corsOptions = require("./utils/corsOptions")
 const app = express()
 connectDB()
-
+const { checkAuth } = require("./middlewares/checkAuth")
 /**
  *   Enabled CORS on the website so you will not get
  *  errors on frontend
  */
 app.use(cors(corsOptions))
+app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 /*
@@ -27,6 +30,12 @@ app.get("/", (req, res) => {
   res.status(200).json({
     msg: "Hello from express auth",
     success: true,
+  })
+})
+
+app.get("/secret", checkAuth, (req, res) => {
+  res.json({
+    msg: "Yay welcome dear user",
   })
 })
 
